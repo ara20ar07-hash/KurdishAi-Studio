@@ -920,7 +920,7 @@ EXACT JSON STRUCTURES PER TYPE:
                         </div>
                         <div className="flex-1 h-full max-h-[380px] rounded-[24px] overflow-hidden relative shadow-2xl border-4 border-white">
                           <img
-                            src={pollinationsUrl(slides[currentSlide].image || slides[currentSlide].title || 'professional presentation', currentSlide)}
+                            src={pollinationsUrl(slides[currentSlide].imagePrompt || slides[currentSlide].title || 'professional presentation', currentSlide)}
                             alt={slides[currentSlide].title || "Presentation Slide"}
                             className="w-[400px] h-[400px] object-cover rounded-2xl shadow-lg border border-gray-100"
                           />

@@ -420,7 +420,9 @@ EXACT JSON STRUCTURES PER TYPE:
         background: theme.bgGradient || theme.background,
         boxShadow: isActive ? `0 0 0 3px ${theme.primary}40` : 'none',
       }}
-    >
+    >{/* Modern Ambient Glow Blobs */}
+    <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full blur-[100px] opacity-20 pointer-events-none bg-blue-500 mixed-blend-multiply" />
+    <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full blur-[100px] opacity-15 pointer-events-none bg-purple-500 mixed-blend-multiply" />
       <div className="relative" style={{ aspectRatio: '16/9' }}>
         <div className="absolute inset-0 flex flex-col justify-center items-center p-2 gap-1 overflow-hidden">
           <div className="text-[7px] font-black opacity-60 uppercase tracking-wide truncate w-full text-center kurdish-text"
@@ -750,6 +752,8 @@ EXACT JSON STRUCTURES PER TYPE:
                         <h1 className={`kurdish-text leading-tight drop-shadow-sm ${getWeightClasses(slides[currentSlide].visualWeight, 'title')}`} style={{ color: selectedTheme.text }}>
                           {slides[currentSlide].title}
                         </h1>
+                          {/* Premium Title Accent Line */}
+                          <div className="w-16 h-1 signaling-bar mt-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-500" />
                         {slides[currentSlide].subtitle && (
                           <p className="kurdish-text text-2xl font-bold px-8 py-3 rounded-full"
                             style={{ color: selectedTheme.id === 'kurdishHeritage' ? '#fff' : selectedTheme.primary, backgroundColor: `${selectedTheme.primary}18` }}>
@@ -759,28 +763,38 @@ EXACT JSON STRUCTURES PER TYPE:
                       </div>
                     )}
 
-                    {/* BULLETS */}
-                    {slides[currentSlide].type === 'bullets' && (
-                      <div className="flex flex-col h-full justify-center w-full">
-                        <div className={`flex items-center gap-4 ${getWeightClasses(slides[currentSlide].visualWeight, 'spacing')}`}>
-                          <div className="p-4 rounded-2xl shrink-0" style={{ backgroundColor: `${selectedTheme.primary}18` }}>
-                            <IconRenderer name={slides[currentSlide].icon} className="w-10 h-10" customStyle={{ color: selectedTheme.primary }} />
-                          </div>
-                          <h2 className={`kurdish-text leading-snug ${getWeightClasses(slides[currentSlide].visualWeight, 'title')}`} style={{ color: selectedTheme.text }}>
-                            {slides[currentSlide].title}
-                          </h2>
+                   {/* BULLETS */}
+                   {slides[currentSlide].type === 'bullets' && (
+                    <div className="flex flex-col h-full justify-center w-full relative z-10">
+    
+                      {/* 1. Header/Title Area */}
+                      <div className={`flex items-center gap-4 ${getWeightClasses(slides[currentSlide].visualWeight, 'spacing')} mb-6`}>
+                        <div className="p-4 rounded-2xl shrink-0 shadow-sm" style={{ backgroundColor: `${selectedTheme.primary}18` }}>
+                          <IconRenderer name={slides[currentSlide].icon} className="w-10 h-10" customStyle={{ color: selectedTheme.primary }} />
                         </div>
-                        <div className={`grid ${getWeightClasses(slides[currentSlide].visualWeight, 'spacing')}`}>
+                        <h2 className={`kurdish-text leading-snug drop-shadow-sm ${getWeightClasses(slides[currentSlide].visualWeight, 'title')}`} style={{ color: selectedTheme.text }}>
+                          {slides[currentSlide].title}
+                        </h2>
+                      </div>
+
+                      {/* 2. The Premium Glassmorphism Card Wrapper */}
+                      <div className="w-full p-6 md:p-8 rounded-3xl bg-white/60 backdrop-blur-md border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-500">
+      
+                        {/* 3. Your Existing Grid (with added hover animations!) */}
+                        <div className={`grid gap-4 ${getWeightClasses(slides[currentSlide].visualWeight, 'spacing')}`}>
                           {slides[currentSlide].bullets?.map((b, i) => (
-                            <div key={i} className="flex items-center gap-4 p-4 rounded-xl shadow-sm"
+                            <div key={i} className="flex items-center gap-4 p-4 rounded-xl transition-transform duration-300 hover:scale-[1.01] hover:shadow-md"
                               style={{ backgroundColor: selectedTheme.id === 'kurdishHeritage' ? 'rgba(255,255,255,0.1)' : selectedTheme.surface, border: selectedTheme.border }}>
-                              <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: selectedTheme.primary }} />
-                              <p className="kurdish-text text-lg font-semibold leading-relaxed">{b}</p>
+                              <div className="w-3 h-3 rounded-full shrink-0 shadow-sm" style={{ backgroundColor: selectedTheme.primary }} />
+                              <p className="kurdish-text text-xl font-semibold leading-relaxed" style={{ color: selectedTheme.text }}>{b}</p>
                             </div>
                           ))}
                         </div>
+
                       </div>
-                    )}
+
+                    </div>
+                  )}
 
                     {/* COMPARISON */}
                     {slides[currentSlide].type === 'comparison' && (
@@ -906,9 +920,9 @@ EXACT JSON STRUCTURES PER TYPE:
                         </div>
                         <div className="flex-1 h-full max-h-[380px] rounded-[24px] overflow-hidden relative shadow-2xl border-4 border-white">
                           <img
-                            src={pollinationsUrl(slides[currentSlide].imagePrompt || slides[currentSlide].title || 'professional presentation', currentSlide)}
-                            alt={slides[currentSlide].imagePrompt}
-                            className="absolute inset-0 w-full h-full object-cover"
+                            src={pollinationsUrl(slides[currentSlide].image || slides[currentSlide].title || 'professional presentation', currentSlide)}
+                            alt={slides[currentSlide].title || "Presentation Slide"}
+                            className="w-[400px] h-[400px] object-cover rounded-2xl shadow-lg border border-gray-100"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
                           <div className="absolute bottom-4 left-4 right-4 kurdish-text text-white text-xs font-bold flex items-center gap-2 opacity-80">

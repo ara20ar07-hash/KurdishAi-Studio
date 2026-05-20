@@ -131,9 +131,9 @@ function getWeightClasses(
 ): string {
   const w = weight || 'balanced';
   if (type === 'container') {
-    if (w === 'light') return 'px-24 pb-20';
-    if (w === 'heavy') return 'px-10 pb-10';
-    return 'px-16 pb-16'; // balanced
+    if (w === 'light') return 'px-4 md:px-24 pb-12 md:pb-20';
+    if (w === 'heavy') return 'px-4 md:px-10 pb-6 md:pb-10';
+    return 'px-4 md:px-16 pb-8 md:pb-16'; // balanced
   }
   if (type === 'title') {
     if (w === 'light') return 'text-3xl tracking-wide';
@@ -976,19 +976,30 @@ EXACT JSON STRUCTURES PER TYPE:
                     )}
                   </div>
 
-                  {/* Navigation pill */}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-4 items-center bg-white/95 backdrop-blur-xl rounded-full px-6 py-2.5 shadow-2xl border border-slate-200 z-30">
-                    <button onClick={() => setCurrentSlide(p => Math.max(0, p - 1))} disabled={currentSlide === 0}
-                      className="p-1.5 hover:bg-slate-100 rounded-full transition-colors disabled:opacity-30">
-                      <ChevronRight className="w-5 h-5 text-slate-800" />
+                  {/* Navigation */}
+                  <div className="absolute bottom-2 md:bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 md:gap-4 bg-white/85 backdrop-blur-xl rounded-full px-3 md:px-6 py-1.5 md:py-2.5 shadow-xl border border-slate-200 z-30 max-w-[90%]">
+
+                    <button
+                      onClick={() => setCurrentSlide((p) => Math.max(0, p - 1))}
+                      disabled={currentSlide === 0}
+                      className="p-1 md:p-1.5 hover:bg-slate-100 rounded-full transition-colors disabled:opacity-30"
+                    >
+                      <ChevronRight className="w-4 h-4 md:w-5 md:h-5 text-slate-800" />
                     </button>
-                    <span className="font-mono font-black text-slate-800">{currentSlide + 1} / {slides.length}</span>
-                    <button onClick={() => setCurrentSlide(p => Math.min(slides.length - 1, p + 1))} disabled={currentSlide === slides.length - 1}
-                      className="p-1.5 hover:bg-slate-100 rounded-full transition-colors disabled:opacity-30">
-                      <ChevronLeft className="w-5 h-5 text-slate-800" />
+
+                    <span className="font-mono font-black text-slate-800 text-sm md:text-base min-w-[55px] text-center">
+                      {currentSlide + 1} / {slides.length}
+                    </span>
+
+                    <button
+                      onClick={() => setCurrentSlide((p) => Math.min(slides.length - 1, p + 1))}
+                      disabled={currentSlide === slides.length - 1}
+                      className="p-1 md:p-1.5 hover:bg-slate-100 rounded-full transition-colors disabled:opacity-30"
+                    >
+                      <ChevronLeft className="w-4 h-4 md:w-5 md:h-5 text-slate-800" />
                     </button>
+
                   </div>
-                </div>
 
                 {/* Transition badge below canvas */}
                 {slides[currentSlide].transition && (

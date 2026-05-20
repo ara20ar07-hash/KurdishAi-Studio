@@ -1012,6 +1012,7 @@ EXACT JSON STRUCTURES PER TYPE:
               </div>
             </div>
           </div>
+        </div>
         )}
       </main>
     </div>

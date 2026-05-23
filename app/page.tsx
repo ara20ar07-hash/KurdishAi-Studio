@@ -913,7 +913,7 @@ EXACT JSON STRUCTURES PER TYPE:
                       <div className="flex flex-col items-center justify-center text-center h-full w-full gap-4">
                         <h2 className="kurdish-text text-2xl font-bold tracking-widest uppercase" style={{ color: selectedTheme.textMuted }}>{slides[currentSlide].title}</h2>
                         <div className="kurdish-text text-[110px] font-black leading-none drop-shadow-lg" style={{ color: selectedTheme.id === 'kurdishHeritage' ? '#EAB308' : selectedTheme.primary }}>
-                          {slides[currentSlide].content}
+                          {typeof slides[currentSlide].content === 'string' ? slides[currentSlide].content : String(slides[currentSlide].content)}
                         </div>
                         {slides[currentSlide].subtitle && <p className="kurdish-text text-2xl font-semibold" style={{ color: selectedTheme.text }}>{slides[currentSlide].subtitle}</p>}
                       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, ReactNode } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Play, Sparkles, Mic, LayoutTemplate, FileText, ChevronRight, ChevronLeft,
   Loader2, CheckCircle2, GraduationCap, Target, Users, TrendingUp, Info,
@@ -169,7 +169,7 @@ interface ImageSlideProps {
   theme: ThemeConfig;
 }
 
-function ImageSlide({ imagePrompt, title, altText, theme }: ImageSlideProps): ReactNode {
+function ImageSlide({ imagePrompt, title, altText, theme }: ImageSlideProps) {
   const [imageUrl, setImageUrl] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);

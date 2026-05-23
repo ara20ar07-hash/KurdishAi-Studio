@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, ReactNode } from 'react';
 import {
   Play, Sparkles, Mic, LayoutTemplate, FileText, ChevronRight, ChevronLeft,
   Loader2, CheckCircle2, GraduationCap, Target, Users, TrendingUp, Info,
@@ -157,6 +157,99 @@ function pollinationsUrl(prompt: string, seed: number): string {
     width: '800', height: '450', nologo: 'true', seed: String(seed)
   });
   return `${base}?${params.toString()}`;
+}
+
+// ============================================================================
+// IMAGE SLIDE COMPONENT — Handles image loading, errors, and retry logic
+// ============================================================================
+interface ImageSlideProps {
+  imagePrompt: string;
+  title: string;
+  altText?: string;
+  theme: ThemeConfig;
+}
+
+function ImageSlide({ imagePrompt, title, altText, theme }: ImageSlideProps): ReactNode {
+  const [imageUrl, setImageUrl] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+  
+  const maxRetries = 3;
+
+  useEffect(() => {
+    // Generate a random seed for variety while preventing infinite retries
+    const seed = Math.floor(Math.random() * 1000000);
+    const url = pollinationsUrl(imagePrompt, seed);
+    setImageUrl(url);
+    setIsLoading(true);
+    setHasError(false);
+  }, [imagePrompt]);
+
+  const handleImageLoad = useCallback(() => {
+    setIsLoading(false);
+    setHasError(false);
+    setRetryCount(0);
+  }, []);
+
+  const handleImageError = useCallback(() => {
+    if (retryCount < maxRetries) {
+      // Retry with a new seed
+      console.log("[v0] Image load failed, retrying...", retryCount + 1);
+      setRetryCount(prev => prev + 1);
+      setTimeout(() => {
+        const newSeed = Math.floor(Math.random() * 1000000);
+        setImageUrl(pollinationsUrl(imagePrompt, newSeed));
+      }, 1000);
+    } else {
+      console.log("[v0] Image load failed after retries");
+      setHasError(true);
+      setIsLoading(false);
+    }
+  }, [imagePrompt, retryCount]);
+
+  return (
+    <div className="relative w-full h-full max-h-[380px] rounded-[24px] overflow-hidden shadow-2xl border-4 border-white">
+      {/* Loading state */}
+      {isLoading && (
+        <div className="absolute inset-0 bg-gray-200 flex items-center justify-center z-10">
+          <div className="flex flex-col items-center gap-2">
+            <Loader2 className="w-8 h-8 animate-spin text-gray-600" />
+            <p className="text-xs text-gray-600 font-medium">Loading image...</p>
+          </div>
+        </div>
+      )}
+
+      {/* Error state */}
+      {hasError && (
+        <div className="absolute inset-0 bg-gray-100 flex items-center justify-center z-10 flex-col p-4">
+          <AlertTriangle className="w-8 h-8 text-red-500 mb-2" />
+          <p className="text-xs text-gray-600 text-center font-medium">
+            Unable to generate image. Please try another prompt.
+          </p>
+        </div>
+      )}
+
+      {/* Image element */}
+      <img
+        src={imageUrl}
+        alt={altText || title}
+        className="w-[400px] h-[400px] object-cover rounded-2xl shadow-lg border border-gray-100"
+        onLoad={handleImageLoad}
+        onError={handleImageError}
+        crossOrigin="anonymous"
+      />
+
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent pointer-events-none" />
+
+      {/* Image prompt label */}
+      <div className="absolute bottom-4 left-4 right-4 kurdish-text text-white text-xs font-bold flex items-center gap-2 opacity-80 truncate">
+        <ImageIcon className="w-4 h-4 text-yellow-400 shrink-0" />
+        <span className="truncate">{imagePrompt}</span>
+      </div>
+    </div>
+  );
 }
 
 // ============================================================================
@@ -609,7 +702,7 @@ EXACT JSON STRUCTURES PER TYPE:
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8" dir="rtl">
                 <div className="bg-[#16A34A]/5 p-6 rounded-[18px] border border-[#16A34A]/10">
-                  <div className="flex items-center gap-2 text-[#16A34A] font-bold mb-2"><Users className="w-5 h-5" /><span className="kurdish-text">ئامانجی پێشکەشکار</span></div>
+                  <div className="flex items-center gap-2 text-[#16A34A] font-bold mb-2"><Users className="w-5 h-5" /><span className="kurdish-text">ئامانجی پێشکەشکا��</span></div>
                   <p className="kurdish-text text-slate-700 text-lg leading-relaxed">{presentationPlan.audience}</p>
                 </div>
                 <div className="bg-[#2563EB]/5 p-6 rounded-[18px] border border-[#2563EB]/10">
@@ -918,17 +1011,12 @@ EXACT JSON STRUCTURES PER TYPE:
                             {slides[currentSlide].overlayText}
                           </p>
                         </div>
-                        <div className="flex-1 h-full max-h-[380px] rounded-[24px] overflow-hidden relative shadow-2xl border-4 border-white">
-                          <img
-                            src={pollinationsUrl(slides[currentSlide].imagePrompt || slides[currentSlide].title || 'professional presentation', currentSlide)}
-                            alt={slides[currentSlide].title || "Presentation Slide"}
-                            className="w-[400px] h-[400px] object-cover rounded-2xl shadow-lg border border-gray-100"
+                        <div className="flex-1">
+                          <ImageSlide
+                            imagePrompt={slides[currentSlide].imagePrompt || slides[currentSlide].title || 'professional presentation'}
+                            title={slides[currentSlide].title || "Presentation Slide"}
+                            theme={selectedTheme}
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-                          <div className="absolute bottom-4 left-4 right-4 kurdish-text text-white text-xs font-bold flex items-center gap-2 opacity-80">
-                            <ImageIcon className="w-4 h-4 text-yellow-400 shrink-0" />
-                            {slides[currentSlide].imagePrompt}
-                          </div>
                         </div>
                       </div>
                     )}

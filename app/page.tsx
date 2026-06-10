@@ -370,7 +370,8 @@ RULES: Exactly ${slideCount} sections. Kurdish Sorani language. Logical narrativ
     setSlides([]);
     setCurrentSlide(0);
 
-    const systemPrompt = `You are a world-class Kurdish (Sorani) presentation designer.
+    const systemPrompt = `You are a world-class academic presentation strategist specializing in Kurdish Sorani university content. Your job is to analyze the input text deeply and produce a structured, narratively compelling presentation plan.
+.
 RULES:
 1. Fixed 16:9 canvas — all text must be short and concise.
 2. Output ONLY a raw JSON array. No markdown fences.
@@ -393,6 +394,7 @@ EXACT JSON STRUCTURES PER TYPE:
 
     try {
       const planString = `Audience: ${presentationPlan.audience}. Goal: ${presentationPlan.goal}. Sections: ${JSON.stringify(presentationPlan.sections)}`;
+      await new Promise(resolve => setTimeout(resolve, 5000)); // wait 5s
       const text = await callGeminiAPI(systemPrompt, planString);
       let clean = text.replace(/```json\n?|\n?```/gi, '').trim();
       clean = clean.substring(clean.indexOf('['), clean.lastIndexOf(']') + 1);

@@ -271,7 +271,7 @@ export default function App() {
         ? localStorage.getItem('groq_api_key') || ''
         : '';
 
-    const response = await fetch('/api/gemini', {
+    const response = await fetch('/api/groq', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -495,8 +495,8 @@ EXACT JSON STRUCTURES PER TYPE:
             <h3 className="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2"><Settings className="w-5 h-5 text-indigo-500" /> تایبەتمەندییەکانی سیستەم</h3>
             <p className="text-xs text-slate-500 mb-6 leading-relaxed">کلیلی Gemini API لێرە دابنێ. ئەمە لەسەر سێرڤەرەکەدا بەکاردێت، نەک لە براوزەرەکەت — ئەمە جیاوازیەکی گرنگە.</p>
             <div className="flex flex-col gap-2 mb-6">
-              <label className="text-xs font-bold text-slate-600 uppercase tracking-wide">Gemini API Key</label>
-              <input type="password" value={tempApiKey} onChange={e => setTempApiKey(e.target.value)} placeholder="AIzaSy..."
+              <label className="text-xs font-bold text-slate-600 uppercase tracking-wide">Groq API Key</label>
+              <input type="password" value={tempApiKey} onChange={e => setTempApiKey(e.target.value)} placeholder="gsk_..."
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#16A34A] font-mono" />
               {savedKeyExists && <span className="text-[10px] text-green-600 font-bold flex items-center gap-1"><Check className="w-3.5 h-3.5" /> کلیلی API پاشەکەوت کراوە!</span>}
             </div>

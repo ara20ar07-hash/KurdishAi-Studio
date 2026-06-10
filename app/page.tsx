@@ -187,7 +187,7 @@ export default function App() {
   // Load saved API key on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const storedKey = localStorage.getItem('gemini_api_key') || '';
+      const storedKey = localStorage.getItem('groq_api_key') || '';
       setTempApiKey(storedKey);
       setSavedKeyExists(!!storedKey);
     }
@@ -225,13 +225,13 @@ export default function App() {
   };
 
   const saveApiKey = () => {
-    localStorage.setItem('gemini_api_key', tempApiKey.trim());
+    localStorage.setItem('groq_api_key', tempApiKey.trim());
     setSavedKeyExists(!!tempApiKey.trim());
     setShowSettings(false);
   };
 
   const clearApiKey = () => {
-    localStorage.removeItem('gemini_api_key');
+    localStorage.removeItem('groq_api_key');
     setTempApiKey('');
     setSavedKeyExists(false);
   };
@@ -268,7 +268,7 @@ export default function App() {
   const callGeminiAPI = async (systemPrompt: string, userContent: string): Promise<string> => {
     const customKey =
       typeof window !== 'undefined'
-        ? localStorage.getItem('gemini_api_key') || ''
+        ? localStorage.getItem('groq_api_key') || ''
         : '';
 
     const response = await fetch('/api/gemini', {

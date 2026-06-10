@@ -21,12 +21,12 @@ export async function POST(request) {
       body.messages?.[0]?.content || body.prompt || body.text || 'Generate a presentation';
 
     const groqPayload = {
-      model: body.model || 'llama-3.1-8b-instant',   // fast + large context
+      model: body.model || 'llama-3.3-70b-versatile',   // fast + large context
       messages: [
         { role: 'system', content: systemText },
         { role: 'user',   content: userText },
       ],
-      max_tokens:   body.max_tokens || 4000,
+      max_tokens:   body.max_tokens || 2000,
       temperature:  body.temperature ?? 0.7,
     };
 
